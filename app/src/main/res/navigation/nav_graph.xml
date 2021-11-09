@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/movieListFragment">
+
+    <fragment
+        android:id="@+id/movieListFragment"
+        android:name="dev.bigfootprint.wannawatch.ui.MovieListFragment"
+        android:label="MovieListFragment" >
+        <action
+            android:id="@+id/viewMovie"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/movieDetailFragment"
+        android:name="dev.bigfootprint.wannawatch.ui.MovieDetailFragment"
+        android:label="MovieDetailFragment" />
+</navigation>
