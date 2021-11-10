@@ -17,7 +17,7 @@ class MovieDtoMapper @Inject constructor(moshi: Moshi) {
     }
 
 
-    fun convertJsonToMovieObject(allPopularMoviesJson: JSONObject): List<Movie> {
+    fun convertJsonToMovieObject(allPopularMoviesJson: JSONObject): MutableList<Movie> {
         Timber.d("converting json to list of Movies")
         val movieList = mutableListOf<Movie>()
         //Parse JSON OBJECT
@@ -29,6 +29,11 @@ class MovieDtoMapper @Inject constructor(moshi: Moshi) {
             movieList.add(convertedMovie!!)
         }
         return movieList
+    }
+
+    fun parseMovieDetailsJson(movieDetailsJson: JSONObject){
+        Timber.d("converting movie details json to Planet")
+
     }
 
 

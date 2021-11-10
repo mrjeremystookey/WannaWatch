@@ -6,17 +6,19 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Movie(
+            @Json(name = "id")
+            var movieId: String? = null,
             @Json(name = "original_title")
-            var title: String,
+            var title: String? = null,
             @Json(name = "poster_path")
-            var moviePoster: String,
+            var moviePoster: String? = null,
             @Json(name = "overview")
-            var description: String?,
+            var description: String? = null,
             @Json(name = "vote_average")
-            var voteAverage: String?,
+            var voteAverage: String? = null,
             @Json(name = "revenue")
-            var revenue: String?,
+            var revenue: String? = null,
             @Json(name = "release_date")
-            var releaseDate: String?) {
+            var releaseDate: String? = null) {
 
 }

@@ -53,7 +53,7 @@ fun MovieCard(
                         data = "https://www.themoviedb.org/t/p/w1280"+ movie.moviePoster,
                         builder = {transformations(CircleCropTransformation())}),
                     contentDescription = "Movie Poster",
-                    modifier = Modifier.size(128.dp).wrapContentSize().padding(4.dp)
+                    modifier = Modifier.size(128.dp).fillMaxHeight().padding(4.dp)
                 )
             }
             Column(
@@ -64,7 +64,7 @@ fun MovieCard(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Start) {
                 Row(Modifier){
-                    Text(movie.title, Modifier.weight(.8f) ,fontSize = 16.sp)
+                    movie.title?.let { Text(it, Modifier.weight(.8f) ,fontSize = 16.sp) }
                     Spacer(modifier = Modifier.width(16.dp))
                     Text(text = "${movie.releaseDate}",
                         modifier = Modifier.weight(.7f).align(CenterVertically),

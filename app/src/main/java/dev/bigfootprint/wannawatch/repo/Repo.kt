@@ -1,6 +1,10 @@
 package dev.bigfootprint.wannawatch.repo
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import dev.bigfootprint.wannawatch.model.Movie
+import dev.bigfootprint.wannawatch.network.MoviePagingSource
 import dev.bigfootprint.wannawatch.network.TMDBApiService
 import dev.bigfootprint.wannawatch.util.MovieDtoMapper
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +20,8 @@ class Repo @Inject constructor(private var apiService: TMDBApiService,
     }
 
 
-    suspend fun getMoviesFromNetwork(): List<Movie> {
+    //Initial function to retrieve movies and test domain mapper
+    suspend fun getMoviesFromNetwork(): MutableList<Movie> {
         Timber.d("Attempting to fetch movies...")
         val jsonObject = apiService.getMovies(1)
         val convertedMovieList = movieMapper.convertJsonToMovieObject(jsonObject)
@@ -24,8 +29,22 @@ class Repo @Inject constructor(private var apiService: TMDBApiService,
         return convertedMovieList
     }
 
-    suspend fun getMovieDetailsFromNetwork(){
-        val jsonArray = apiService.getMovieDetails()
+
+     fun getPagedMoviesFromNetwork(): Flow<PagingData<Movie>> {
+        Timber.d("getPagedMoviesFromNetwork called")
+        val movies: Flow<PagingData<Movie>> = Pager(config = PagingConfig(
+            pageSize = 20)
+        ) {
+            MoviePagingSource()
+        }.flow
+        return movies
+    }
+
+    suspend fun getMovieDetailsFromNetwork(movieId: String): JSONObject {
+        Timber.d("getting movie details for $movieId")
+        val movieDetailsJsonObject = apiService.getMovieDetails(movieId)
+        Timber.d("$movieDetailsJsonObject")
+        return movieDetailsJsonObject
     }
 
 

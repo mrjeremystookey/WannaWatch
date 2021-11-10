@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material.Text
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -37,9 +38,10 @@ class MovieDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return ComposeView(requireContext()).apply {
+            Timber.d("onCreateView called")
+            movieViewModel.selectedMovie.value.movieId?.let { movieViewModel.getMovieDetails(it) }
             setContent {
-                Timber.d("onCreateView called")
-                Text("Movie Detail Fragment")
+                Text("${movieViewModel.selectedMovieJson.value}", color= Color.White)
             }
         }
     }

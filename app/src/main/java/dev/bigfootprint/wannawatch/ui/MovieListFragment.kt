@@ -47,7 +47,8 @@ class MovieListFragment : Fragment() {
                             movie = movie,
                             navigateToMovieDetails = {
                                 val action = MovieListFragmentDirections.viewMovie()
-                                Timber.d("navigating to movie: ${movie.title}")
+                                Timber.d("navigating to movie: ${movie.movieId}")
+                                movieViewModel.selectedMovie.value = movie
                                 findNavController().navigate(action)
                             }
                         )

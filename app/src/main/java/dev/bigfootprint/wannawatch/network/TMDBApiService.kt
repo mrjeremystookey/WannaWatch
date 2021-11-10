@@ -3,7 +3,6 @@ package dev.bigfootprint.wannawatch.network
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import org.json.JSONArray
 import org.json.JSONObject
@@ -45,8 +44,29 @@ class TMDBApiService @Inject constructor(private var queue: RequestQueue) {
     }
 
 
-    suspend fun getMovieDetails() = suspendCoroutine<JSONArray> {
+    //https://api.themoviedb.org/3/movie/{movie_id}?api_key=<<api_key>>&language=en-US
 
+    suspend fun getMovieDetails(movieId: String) = suspendCoroutine<JSONObject> { cont ->
+        val getMovieDetailsUrl = "https://api.themoviedb.org/3/movie/$movieId?api_key=$API_KEY&language=en-US"
+        Timber.d("url used: $getMovieDetailsUrl")
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.GET,
+            getMovieDetailsUrl,
+            null,
+            { response ->
+                Timber.d("movie details fetch worked")
+                cont.resume(response)
+            },
+            {
+                Timber.d("${it.cause}")
+            })
+        jsonObjectRequest.retryPolicy = DefaultRetryPolicy(
+            20 * 1000,
+            5,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        )
+        Timber.d("request added to queue")
+        queue.add(jsonObjectRequest)
     }
 
 
