@@ -10,6 +10,8 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bigfootprint.wannawatch.ui.composables.MovieCard
 import dev.bigfootprint.wannawatch.viewmodels.MovieViewModel
@@ -37,9 +39,8 @@ class MovieListFragment : Fragment() {
         return ComposeView(requireContext()).apply{
             Timber.d("OnCreateView called")
             setContent{
-
+                /*val lazyMovies = movieViewModel.allMoviesFlow.collectAsLazyPagingItems()
                 //Loading Paging movies
-                /*val lazyMovies = movieViewModel.movies.collectAsLazyPagingItems()
                 Timber.d("${lazyMovies.itemCount}")
                 LazyColumn(){
                     items(lazyMovies){ movie ->

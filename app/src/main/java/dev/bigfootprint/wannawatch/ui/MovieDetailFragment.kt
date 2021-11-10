@@ -48,7 +48,7 @@ class MovieDetailFragment : Fragment() {
     ): View? {
         return ComposeView(requireContext()).apply {
             Timber.d("onCreateView called")
-            movieViewModel.selectedMovie.value.movieId?.let { movieViewModel.getMovieDetails(it) }
+            movieViewModel.selectedMovie.value.movieId?.let { movieViewModel.getMovieDetails() }
             setContent {
 
                 Column(Modifier.fillMaxSize()) {

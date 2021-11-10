@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.bigfootprint.wannawatch.network.MoviePagingSource
 import dev.bigfootprint.wannawatch.network.TMDBApiService
 import dev.bigfootprint.wannawatch.util.MovieDtoMapper
 import timber.log.Timber
@@ -32,6 +33,7 @@ object Module {
         return TMDBApiService(requestQueue)
     }
 
+
     @Singleton
     @Provides
     fun provideMoshi(): Moshi {
@@ -46,6 +48,7 @@ object Module {
         Timber.d("PlanetDto injected")
         return MovieDtoMapper(provideMoshi())
     }
+
 
 
 }

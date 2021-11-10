@@ -21,21 +21,13 @@ class MoviePagingSource(): PagingSource<Int, Movie>() {
     @Inject
     lateinit var api: TMDBApiService
 
-    @ExperimentalPagingApi
-    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
-        }
-    }
-
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         val page = params.key?:1
         return try {
             val jsonMovieList = api.getMovies(page)
+            Timber.d("json retrieved: $jsonMovieList")
             val convertedList = mapper.convertJsonToMovieObject(jsonMovieList)
-            Timber.d("$convertedList")
-            //Convert to Movie Object
+            Timber.d("converted list: $convertedList")
             LoadResult.Page(
                 data = convertedList,
                 prevKey = page - 1,
@@ -44,6 +36,15 @@ class MoviePagingSource(): PagingSource<Int, Movie>() {
         }
          catch (e: Exception){
             return LoadResult.Error(e)
+        }
+    }
+
+
+    @ExperimentalPagingApi
+    override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
+        return state.anchorPosition?.let { anchorPosition ->
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
     }
 

@@ -29,15 +29,6 @@ class Repo @Inject constructor(private var apiService: TMDBApiService,
     }
 
 
-     fun getPagedMoviesFromNetwork(): Flow<PagingData<Movie>> {
-        Timber.d("getPagedMoviesFromNetwork called")
-        val movies: Flow<PagingData<Movie>> = Pager(config = PagingConfig(
-            pageSize = 20)
-        ) {
-            MoviePagingSource()
-        }.flow
-        return movies
-    }
 
     suspend fun getMovieDetailsFromNetwork(movieId: String): Movie {
         Timber.d("getting movie details for $movieId")

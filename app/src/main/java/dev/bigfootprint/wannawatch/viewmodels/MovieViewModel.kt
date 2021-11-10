@@ -8,11 +8,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bigfootprint.wannawatch.model.Movie
 import dev.bigfootprint.wannawatch.network.MoviePagingSource
 import dev.bigfootprint.wannawatch.repo.Repo
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -22,30 +25,20 @@ class MovieViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
 
 
 
-    val movies: Flow<PagingData<Movie>> = Pager(PagingConfig(pageSize = 30)) { MoviePagingSource() }.flow
-
-
-
-    init {
-        Timber.d("MovieListViewModel initialized")
-        getListOfMovies()
-    }
-
-
     private val _listOfMovies = mutableStateOf(mutableListOf<Movie>())
     val listOfMovies: State<MutableList<Movie>> = _listOfMovies
 
-
-    //displays parsed Movie object
     var selectedMovie: MutableState<Movie> = mutableStateOf(Movie())
 
 
-    //Could be run on ViewModel init or on fragment's onCreateView
-    private fun getListOfMovies(){
-        Timber.d("getListOfMovies called")
+    private val _allMoviesFlow: Flow<PagingData<Movie>> = Pager(PagingConfig(pageSize = 30)) { MoviePagingSource() }.flow
+    val allMoviesFlow: Flow<PagingData<Movie>> = _allMoviesFlow
 
+    init {
+        Timber.d("MovieListViewModel initialized")
         viewModelScope.launch {
-            //List of movies
+
+            //Non-Paged movieds
             runCatching {
                 repo.getMoviesFromNetwork()
             }.onFailure { error: Throwable ->
@@ -54,12 +47,21 @@ class MovieViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
                 Timber.d("fetching movies successful")
                 _listOfMovies.value = listOfMovies
             }
+
+            //Paged movies
+            /*_allMoviesFlow.collect { it ->
+                it.map {
+                    _listOfMovies.value.add(it)
+                }
+            }*/
         }
     }
 
 
+
+
     //Occurs on movie selection
-    fun getMovieDetails(movieId: String){
+    fun getMovieDetails(){
         viewModelScope.launch {
             runCatching {
                 val movie = selectedMovie.value.movieId?.let { repo.getMovieDetailsFromNetwork(it) }
