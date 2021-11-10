@@ -30,8 +30,8 @@ class MovieViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
     val listOfMovies: State<MutableList<Movie>> = _listOfMovies
 
 
+    //displays parsed Movie object
     var selectedMovie: MutableState<Movie> = mutableStateOf(Movie())
-    var selectedMovieJson: MutableState<JSONObject> = mutableStateOf(JSONObject())
 
 
     //Could be run on ViewModel init or on fragment's onCreateView
@@ -65,10 +65,11 @@ class MovieViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
     fun getMovieDetails(movieId: String){
         viewModelScope.launch {
             runCatching {
-                var movie = selectedMovie.value.movieId?.let { repo.getMovieDetailsFromNetwork(it) }
+                val movie = selectedMovie.value.movieId?.let { repo.getMovieDetailsFromNetwork(it) }
+
                 Timber.d("Movie deets: $movie")
                 if (movie != null) {
-                    selectedMovieJson.value = movie
+                    selectedMovie.value = movie
                 }
             }.onFailure { error: Throwable ->
                 Timber.d("fetching movie details error, $error")

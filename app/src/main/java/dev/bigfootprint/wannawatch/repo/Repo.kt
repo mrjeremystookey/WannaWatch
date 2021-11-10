@@ -40,11 +40,14 @@ class Repo @Inject constructor(private var apiService: TMDBApiService,
         return movies
     }
 
-    suspend fun getMovieDetailsFromNetwork(movieId: String): JSONObject {
+    suspend fun getMovieDetailsFromNetwork(movieId: String): Movie {
         Timber.d("getting movie details for $movieId")
         val movieDetailsJsonObject = apiService.getMovieDetails(movieId)
+        //movie will get returned
+        val movie = movieMapper.parseMovieDetailsJson(movieDetailsJsonObject)
         Timber.d("$movieDetailsJsonObject")
-        return movieDetailsJsonObject
+        Timber.d("$movie")
+        return movie
     }
 
 
