@@ -1,10 +1,11 @@
 package dev.bigfootprint.wannawatch.network
 
-import androidx.paging.*
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import dev.bigfootprint.wannawatch.model.Movie
 import dev.bigfootprint.wannawatch.util.MovieDtoMapper
 import timber.log.Timber
-import java.io.IOException
 import javax.inject.Inject
 
 class MoviePagingSource(): PagingSource<Int, Movie>() {

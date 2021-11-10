@@ -4,29 +4,22 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Transformations
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import dev.bigfootprint.wannawatch.model.Movie
 
 
-
-
-
 @Composable
 fun MovieCard(
-    movie: Movie,
+    movie: Movie?,
     navigateToMovieDetails: () -> Unit,
 ){
     Card(
@@ -50,7 +43,7 @@ fun MovieCard(
             Column(Modifier.wrapContentSize().align(CenterVertically)) {
                 Image(
                     painter = rememberImagePainter(
-                        data = "https://www.themoviedb.org/t/p/w1280"+ movie.moviePoster,
+                        data = "https://www.themoviedb.org/t/p/w1280"+ movie?.moviePoster,
                         builder = {transformations(CircleCropTransformation())}),
                     contentDescription = "Movie Poster",
                     modifier = Modifier.size(128.dp).fillMaxHeight().padding(4.dp)
@@ -64,14 +57,14 @@ fun MovieCard(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Start) {
                 Row(Modifier){
-                    movie.title?.let { Text(it, Modifier.weight(.8f) ,fontSize = 16.sp) }
+                    movie?.title?.let { Text(it, Modifier.weight(.8f) ,fontSize = 16.sp) }
                     Spacer(modifier = Modifier.width(16.dp))
-                    Text(text = "${movie.releaseDate}",
+                    Text(text = "${movie?.releaseDate}",
                         modifier = Modifier.weight(.7f).align(CenterVertically),
                         fontSize = 12.sp,
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Rating: ${movie.voteAverage}",
+                    Text(text = "Rating: ${movie?.voteAverage}",
                         modifier = Modifier.weight(.7f).align(CenterVertically),
                         fontSize = 12.sp,
                     )
@@ -80,7 +73,7 @@ fun MovieCard(
                     Modifier
                         .padding(top = 4.dp)
                         .wrapContentSize()){
-                    Text("" + movie.description, fontSize = 12.sp)
+                    Text("" + movie?.description, fontSize = 12.sp)
                 }
             }
             Column(

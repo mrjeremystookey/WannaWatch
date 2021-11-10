@@ -5,19 +5,25 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.map
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bigfootprint.wannawatch.model.Movie
 import dev.bigfootprint.wannawatch.network.MoviePagingSource
 import dev.bigfootprint.wannawatch.repo.Repo
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MovieViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
+
+
+
+    val movies: Flow<PagingData<Movie>> = Pager(PagingConfig(pageSize = 30)) { MoviePagingSource() }.flow
+
 
 
     init {
@@ -39,7 +45,6 @@ class MovieViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
         Timber.d("getListOfMovies called")
 
         viewModelScope.launch {
-
             //List of movies
             runCatching {
                 repo.getMoviesFromNetwork()
@@ -49,14 +54,6 @@ class MovieViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
                 Timber.d("fetching movies successful")
                 _listOfMovies.value = listOfMovies
             }
-
-            //Paged movies
-            /*repo.getPagedMoviesFromNetwork().collect { it ->
-                it.map { movie ->
-                    listOfMovies.value.add(movie)
-                    Timber.d("Movie found: ${movie.title}")
-                }
-            }*/
         }
     }
 

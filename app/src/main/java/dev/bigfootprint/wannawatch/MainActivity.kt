@@ -3,7 +3,6 @@ package dev.bigfootprint.wannawatch
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
-import dev.bigfootprint.wannawatch.ui.MovieListFragment
 import timber.log.Timber
 
 @AndroidEntryPoint

@@ -32,9 +32,9 @@ class MovieDtoMapper @Inject constructor(moshi: Moshi) {
     }
 
     fun parseMovieDetailsJson(movieDetailsJson: JSONObject): Movie {
-        var detailedMovie = Movie()
-        val genresList = mutableListOf("")
         Timber.d("converting movie details json to Planet")
+        val detailedMovie = Movie()
+        val genresList = mutableListOf("")
         val genres = movieDetailsJson.getJSONArray("genres")
         val revenue = movieDetailsJson.getString("revenue")
         val description = movieDetailsJson.getString("overview")

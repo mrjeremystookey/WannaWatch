@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.style.TextAlign
@@ -19,7 +18,6 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import coil.compose.rememberImagePainter
-import coil.transform.CircleCropTransformation
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bigfootprint.wannawatch.viewmodels.MovieViewModel
 import timber.log.Timber

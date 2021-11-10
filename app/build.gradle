@@ -90,7 +90,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timber_version"
 
     // Paging
-    implementation "androidx.paging:paging-compose:1.0.0-alpha02"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha14"
 
     // Moshi
     def moshi_version = "1.12.0"

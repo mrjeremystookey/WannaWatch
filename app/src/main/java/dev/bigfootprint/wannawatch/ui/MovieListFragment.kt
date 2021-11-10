@@ -1,16 +1,12 @@
 package dev.bigfootprint.wannawatch.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -41,6 +37,25 @@ class MovieListFragment : Fragment() {
         return ComposeView(requireContext()).apply{
             Timber.d("OnCreateView called")
             setContent{
+
+                //Loading Paging movies
+                /*val lazyMovies = movieViewModel.movies.collectAsLazyPagingItems()
+                Timber.d("${lazyMovies.itemCount}")
+                LazyColumn(){
+                    items(lazyMovies){ movie ->
+                        MovieCard(
+                            movie = movie,
+                            navigateToMovieDetails = {
+                                val action = MovieListFragmentDirections.viewMovie()
+                                Timber.d("navigating to movie: ${movie?.movieId}")
+                                movieViewModel.selectedMovie.value = movie!!
+                                findNavController().navigate(action)
+                            }
+                        )
+                    }
+                }*/
+
+                //Non-Paged movies
                 LazyColumn(content = {
                     items(items = movieViewModel.listOfMovies.value){ movie ->
                         MovieCard(
@@ -53,7 +68,8 @@ class MovieListFragment : Fragment() {
                             }
                         )
                     }
-                })
+                }
+                )
             }
         }
     }
