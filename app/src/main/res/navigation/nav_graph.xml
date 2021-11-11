@@ -10,7 +10,10 @@
         android:label="MovieListFragment" >
         <action
             android:id="@+id/viewMovie"
-            app:destination="@id/movieDetailFragment" />
+            app:destination="@id/movieDetailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:launchSingleTop="true" />
     </fragment>
 
 

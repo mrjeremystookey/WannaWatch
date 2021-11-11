@@ -1,5 +1,6 @@
 package dev.bigfootprint.wannawatch.ui
 
+import android.app.ActionBar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
@@ -42,10 +46,17 @@ class MovieDetailFragment : Fragment() {
         super.onDestroy()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val action: ActionBar? = requireActivity().actionBar
+        action?.setDisplayHomeAsUpEnabled(true)
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         return ComposeView(requireContext()).apply {
             Timber.d("onCreateView called")
             movieViewModel.selectedMovie.value.movieId?.let { movieViewModel.getMovieDetails() }
@@ -75,15 +86,18 @@ class MovieDetailFragment : Fragment() {
                                         builder = {}),
                                     contentDescription = "Movie Poster",
                                     modifier = Modifier
-                                        .size(256.dp)
-                                        .padding(32.dp)
+                                        .size(512.dp)
                                         .weight(.8f)
-                                        .fillMaxSize(),
+                                        .fillMaxSize()
+                                        .padding(16.dp),
                                 )
-                                Column(Modifier.weight(.5f).padding(16.dp)) {
+                                Column(
+                                    Modifier
+                                        .weight(.5f)
+                                        .padding(16.dp)) {
                                     Text("${movieViewModel.selectedMovie.value.title}", color = Color.White, fontSize = 24.sp, textAlign = TextAlign.Left)
                                     Divider(thickness = 3.dp, color = Color.Yellow)
-                                    Text("${movieViewModel.selectedMovie.value.description}", color = Color.White)
+                                    Text("${movieViewModel.selectedMovie.value.description}", color = Color.White, modifier = Modifier.padding(top = 16.dp))
                                 }
                             }
                         }

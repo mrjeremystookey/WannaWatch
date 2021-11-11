@@ -33,14 +33,12 @@ object Module {
         return TMDBApiService(requestQueue)
     }
 
-
     @Singleton
     @Provides
     fun provideMoshi(): Moshi {
         Timber.d("Moshi injected")
         return Moshi.Builder().build()
     }
-
 
     @Singleton
     @Provides

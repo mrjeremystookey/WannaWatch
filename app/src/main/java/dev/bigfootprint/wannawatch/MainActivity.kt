@@ -1,6 +1,7 @@
 package dev.bigfootprint.wannawatch
 
 import android.os.Bundle
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -13,6 +14,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Timber.d("onCreate called")
         setContentView(R.layout.main_activity)
+
+
         /*if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, MovieListFragment())
