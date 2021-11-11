@@ -14,6 +14,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import dagger.hilt.android.AndroidEntryPoint
+import dev.bigfootprint.wannawatch.MainActivity
 import dev.bigfootprint.wannawatch.ui.composables.MovieCard
 import dev.bigfootprint.wannawatch.viewmodels.MovieViewModel
 import timber.log.Timber
@@ -37,6 +38,12 @@ class MovieListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        val activity = activity as? MainActivity
+        activity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        setHasOptionsMenu(false)
+
+
         return ComposeView(requireContext()).apply{
             Timber.d("OnCreateView called")
             setContent{

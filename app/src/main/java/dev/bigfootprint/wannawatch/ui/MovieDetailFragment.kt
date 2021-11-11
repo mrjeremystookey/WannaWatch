@@ -3,15 +3,13 @@ package dev.bigfootprint.wannawatch.ui
 import android.app.ActionBar
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import coil.compose.rememberImagePainter
 import dagger.hilt.android.AndroidEntryPoint
+import dev.bigfootprint.wannawatch.MainActivity
 import dev.bigfootprint.wannawatch.viewmodels.MovieViewModel
 import timber.log.Timber
 
@@ -49,7 +48,19 @@ class MovieDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val action: ActionBar? = requireActivity().actionBar
         action?.setDisplayHomeAsUpEnabled(true)
+
         super.onCreate(savedInstanceState)
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home -> {
+                activity?.onBackPressed()
+                true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateView(
@@ -57,11 +68,17 @@ class MovieDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        val activity = activity as? MainActivity
+        activity?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setHasOptionsMenu(true)
+
+
+
+
         return ComposeView(requireContext()).apply {
             Timber.d("onCreateView called")
             movieViewModel.selectedMovie.value.movieId?.let { movieViewModel.getMovieDetails() }
             setContent {
-
                 Column(Modifier.fillMaxSize()) {
                     //Header image backdrop path
                     Row(
