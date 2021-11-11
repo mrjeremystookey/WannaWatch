@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,25 +40,40 @@ class MovieListFragment : Fragment() {
         return ComposeView(requireContext()).apply{
             Timber.d("OnCreateView called")
             setContent{
-                /*val lazyMovies = movieViewModel.allMoviesFlow.collectAsLazyPagingItems()
+                val lazyMovies = movieViewModel.allMoviesFlow.collectAsLazyPagingItems()
                 //Loading Paging movies
-                Timber.d("${lazyMovies.itemCount}")
+                Timber.d("number of movies: ${lazyMovies.itemCount}")
                 LazyColumn(){
                     items(lazyMovies){ movie ->
-                        MovieCard(
-                            movie = movie,
-                            navigateToMovieDetails = {
-                                val action = MovieListFragmentDirections.viewMovie()
-                                Timber.d("navigating to movie: ${movie?.movieId}")
-                                movieViewModel.selectedMovie.value = movie!!
-                                findNavController().navigate(action)
-                            }
-                        )
+                        movie?.let {
+                            MovieCard(
+                                movie = movie,
+                                navigateToMovieDetails = {
+                                    val action = MovieListFragmentDirections.viewMovie()
+                                    Timber.d("navigating to movie: ${movie.movieId}")
+                                    movieViewModel.selectedMovie.value = movie
+                                    findNavController().navigate(action)
+                                }
+                            )
+                        }
                     }
-                }*/
+                }
+                lazyMovies.apply {
+                    when {
+                        loadState.refresh is LoadState.Loading -> {
+                            //You can add modifier to manage load state when first time response page is loading
+                        }
+                        loadState.append is LoadState.Loading -> {
+                            //You can add modifier to manage load state when next response page is loading
+                        }
+                        loadState.append is LoadState.Error -> {
+                            //You can use modifier to show error message
+                        }
+                    }
+                }
 
                 //Non-Paged movies
-                LazyColumn(content = {
+                /*LazyColumn(content = {
                     items(items = movieViewModel.listOfMovies.value){ movie ->
                         MovieCard(
                             movie = movie,
@@ -70,7 +86,7 @@ class MovieListFragment : Fragment() {
                         )
                     }
                 }
-                )
+                )*/
             }
         }
     }

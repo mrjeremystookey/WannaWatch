@@ -5,10 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.map
+import androidx.paging.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bigfootprint.wannawatch.model.Movie
 import dev.bigfootprint.wannawatch.network.MoviePagingSource
@@ -21,7 +18,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
+class MovieViewModel @Inject constructor(private val repo: Repo, private val pagingSource: MoviePagingSource) : ViewModel() {
 
 
 
@@ -31,7 +28,7 @@ class MovieViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
     var selectedMovie: MutableState<Movie> = mutableStateOf(Movie())
 
 
-    private val _allMoviesFlow: Flow<PagingData<Movie>> = Pager(PagingConfig(pageSize = 30)) { MoviePagingSource() }.flow
+    private val _allMoviesFlow: Flow<PagingData<Movie>> = Pager(PagingConfig(pageSize = 30)) { pagingSource }.flow.cachedIn(viewModelScope)
     val allMoviesFlow: Flow<PagingData<Movie>> = _allMoviesFlow
 
     init {
@@ -39,21 +36,21 @@ class MovieViewModel @Inject constructor(private val repo: Repo) : ViewModel() {
         viewModelScope.launch {
 
             //Non-Paged movieds
-            runCatching {
+            /*runCatching {
                 repo.getMoviesFromNetwork()
             }.onFailure { error: Throwable ->
                 Timber.d("fetching movies failed, $error")
             }.onSuccess { listOfMovies ->
                 Timber.d("fetching movies successful")
                 _listOfMovies.value = listOfMovies
-            }
+            }*/
 
             //Paged movies
-            /*_allMoviesFlow.collect { it ->
+            _allMoviesFlow.collect { it ->
                 it.map {
                     _listOfMovies.value.add(it)
                 }
-            }*/
+            }
         }
     }
 

@@ -15,8 +15,8 @@ import dev.bigfootprint.wannawatch.util.MovieDtoMapper
 import timber.log.Timber
 import javax.inject.Singleton
 
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 object Module {
 
     @Singleton
@@ -47,6 +47,13 @@ object Module {
     fun providesDomainDtoImpl(): MovieDtoMapper {
         Timber.d("PlanetDto injected")
         return MovieDtoMapper(provideMoshi())
+    }
+
+    @Singleton
+    @Provides
+    fun providesMoviePagingSource(mapper: MovieDtoMapper, api: TMDBApiService): MoviePagingSource {
+        Timber.d("PlanetDto injected")
+        return MoviePagingSource(mapper, api)
     }
 
 
